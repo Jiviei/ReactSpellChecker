@@ -1,0 +1,23 @@
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    white-space: pre-wrap;
+  }
+  
+  .tooltip {
+    background-color: black;
+    color: white;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .underline-error {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+    text-decoration-color: red;
+    text-underline-position: under;
+  }

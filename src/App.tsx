@@ -7,14 +7,9 @@ function App() {
   const [partsOfContents, setpartsOfContents] = useState<PartOfContent[]>([]);
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const result = await partsOfContent('Очень, провильное преложение.\nВторая стрчка!');
-
-        setpartsOfContents(result);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }     
-    };
+      const result = await partsOfContent('Очень, провильное преложение.\n\rВторая стрчка!');
+      setpartsOfContents(result);   
+    }
     fetchData();
   }, []);
 

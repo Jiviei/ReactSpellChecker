@@ -17,8 +17,6 @@ const fetchData = async (path: string) => {
       return data;
   };
 const checkSpelling_typo = async (md: string) => {
-    
-    
     const dataaff = await fetchData('/dictionaries/ru_RU/ru_RU.aff');
     const datadic = await fetchData('/dictionaries/ru_RU/ru_RU.dic');
 
@@ -27,15 +25,15 @@ const checkSpelling_typo = async (md: string) => {
         dataaff,
         datadic
     );
-    console.log(dictionary)
 
     var spellingMistakes: SpellingMistake[] = [];
     let lines: string[] = md.split("\n");
+
     for (var il = 0; il < lines.length; il++) {
-        let words: string[] = lines[il].split(/[ .,/#!$%^&*;:{}=\-_`~()]/);
+        let words: string[] = lines[il].split(/[ .,/#!$%^&*;:{}=\-_`~+?()\r\\]/);
         let Idx = 0;
         for (var word of words) {
-            if (word !== "") {
+            if (word.length > 2) {
                 if (!dictionary.check(word)) {
                     spellingMistakes.push({
                         range: {
@@ -68,33 +66,38 @@ const getPartsOfContent = (
     let lines: string[] = md.split("\n");
     let start = 0;
     let line = 0;
+
     for (var spellingMistake of spellingMistakes) {
-        if (line !== spellingMistake.range.line) {
-            if (spellingMistake.range.startIdx === 0) {
-                continue;
-            } else {
-                partOfContent.push({
-                    content: lines[line].substring(start) + "\n" + lines[++line].substring(0, spellingMistake.range.startIdx)
-                });
-            }
-        } else
+        while (line !== spellingMistake.range.line) {
             partOfContent.push({
-                content: lines[line].substring(start, spellingMistake.range.startIdx)
-            });
+                content: lines[line++].substring(start) + "\n"
+            });            
+            start = 0;
+        } 
+        partOfContent.push({
+            content: lines[line].substring(start, spellingMistake.range.startIdx)
+        });
         start = spellingMistake.range.endIdx + 1;
         partOfContent.push({
-            content: spellingMistake.original,
-            advices: spellingMistake.advices
+        content: spellingMistake.original,
+        advices: spellingMistake.advices
         });
     }
+    while (line !== lines.length) {
+        partOfContent.push({
+            content: lines[line++].substring(start) + "\n"
+        });            
+        start = 0;
+    } 
+    console.log(partOfContent)
     return partOfContent;
 }
 
 
-const partsOfContent = async (md = ``): Promise<PartOfContent[]> =>
+const partsOfContent = async (md: string): Promise<PartOfContent[]> =>
 {
-    const spellingMistakes: SpellingMistake[] = await checkSpelling_typo(md);
-    console.log(spellingMistakes)
+    md = await fetchData('text.txt');    
+    const spellingMistakes: SpellingMistake[] = await checkSpelling_typo(md);    
     return getPartsOfContent(md, spellingMistakes);
 }
 

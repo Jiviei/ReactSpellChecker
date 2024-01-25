@@ -8,3 +8,8 @@
 .advice:hover{
     background-color: rgb(90, 90, 90);
 }
+.misspelled_word{
+    text-decoration: underline;
+    text-decoration-color: red;
+    text-decoration-thickness: 1px;
+}

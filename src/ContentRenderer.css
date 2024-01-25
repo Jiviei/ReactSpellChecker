@@ -1,3 +1,6 @@
+.content_container{
+    white-space: pre-wrap;
+}
 .advices{
     border-radius: 6%;
     padding: 3px;

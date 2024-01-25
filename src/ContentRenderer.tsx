@@ -12,7 +12,7 @@ const ContentRenderer = ({ data }: { data: PartOfContent[] }) => {
 		setpartsOfContent(data);
 	  }, [data]);
     return (
-		<pre>
+		<pre className='content_container'>
 			{partsOfContent.map((content) => (
 				<span>
 					{content.advices ? (
@@ -20,8 +20,8 @@ const ContentRenderer = ({ data }: { data: PartOfContent[] }) => {
 							children={<span className='misspelled_word'>{content.content}</span>}
 							content={
 							<div  className='advices'>
-								{content.advices.map((advice) => (
-									<div className='advice'
+								{content.advices.map((advice) => 
+									<div key={advice} className='advice'
 									onClick={() => {
 										content.content = advice;
 										delete content.advices;
@@ -29,7 +29,7 @@ const ContentRenderer = ({ data }: { data: PartOfContent[] }) => {
 										}}
 									>
 										{advice}
-									</div>))
+									</div>)
 								}									
 							</div> 
 							}

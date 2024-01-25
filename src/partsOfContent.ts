@@ -96,7 +96,7 @@ const getPartsOfContent = (
 
 const partsOfContent = async (md: string): Promise<PartOfContent[]> =>
 {
-    md = await fetchData('text.txt');    
+    md = await fetchData('text.txt');
     const spellingMistakes: SpellingMistake[] = await checkSpelling_typo(md);    
     return getPartsOfContent(md, spellingMistakes);
 }

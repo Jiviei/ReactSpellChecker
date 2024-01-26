@@ -7,14 +7,13 @@ import './ContentRenderer.css'
 
 const ContentRenderer = ({ data }: { data: PartOfContent[] }) => {
 	const [partsOfContent, setpartsOfContent] = useState<PartOfContent[]>([]);
-	console.log(data)
 	useEffect(() => {
 		setpartsOfContent(data);
 	  }, [data]);
     return (
 		<pre className='content_container'>
-			{partsOfContent.map((content) => (
-				<span>
+			{partsOfContent.map((content, index) => (
+				<span key={index}>
 					{content.advices ? (
 						<Tooltip
 							children={<span className='misspelled_word'>{content.content}</span>}
